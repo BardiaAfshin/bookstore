@@ -1,0 +1,15 @@
+{
+    "name": "bardiaafshin/guidance",
+    "require": {
+        "silex/silex": "^1.2",
+        "doctrine/dbal": "2.3.*",
+        "twig/twig": "1.*"
+    },
+    "authors": [
+        {
+            "name": "Bardia Afshin",
+            "email": "bardia.b.afshin@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

@@ -1,0 +1,25 @@
+<h3>Bookmark</h3>
+<h4><p>
+{% for letter in 'A'..'Z' %}
+    {% if letter in alphas %}
+        <a href="#{{ letter }}">{{ letter }}</a>
+    {% else %}
+        {{ letter }}
+    {% endif %}
+{% endfor %}
+</p></h4>
+
+<h3>Books</h3>
+{% for book in books %}
+    {% if book.alpha not in index_name %}
+        {% set index_name = index_name|merge([book.alpha]) %}
+    <h4>
+        <a name="{{ book.alpha }}">{{ book.alpha }}</a>
+    </h4>
+    {% endif %}
+    <h5>
+        <p>
+            {{ book.title }}
+        </p>
+    </h5>
+{% endfor %}
