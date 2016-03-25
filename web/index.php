@@ -39,11 +39,6 @@ $app['db.options'] = array(
     'password' => '',
 );
 
-/*
- * select title from books
- * foreach title print book name
- */
-
 $app->get('/', function() use ($app)
 {
     $alphas = []; //initialize blank alphas array
@@ -51,10 +46,9 @@ $app->get('/', function() use ($app)
      * Todo: refactor into it's own model
      * performance note: triggering  index_title
      */
-    $books = $app['db']->fetchAll('SELECT substr(title,1,1) as alpha, title FROM books;');
+    $books = $app['db']->fetchAll('SELECT id, substr(title,1,1) as alpha, title FROM books;');
     foreach($books as $book)
     {
-        if(!in_array($book['alpha'], $alphas))
         {
             $alphas[] = $book['alpha'];
         }
@@ -65,6 +59,18 @@ $app->get('/', function() use ($app)
             'books' => $books,
             'alphas' => $alphas,
             'index_name' => [] //variable will be used on view only
+        )
+    );
+});
+
+$app->get('/book/{id}', function($id) use ($app)
+{
+    $books = $app['db']->fetchAll('SELECT id,isbn,title,description FROM books WHERE id = '.$id.' LIMIT 1');
+
+    return $app['twig']->render(
+        'book.html.twig',
+        array(
+            'books' => $books
         )
     );
 });
