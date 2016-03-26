@@ -19,7 +19,7 @@
     {% endif %}
     <h5>
         <p>
-            <a href="/book/{{ book.id }}">{{ book.title }}</a>
+            <a href="/book/{{ book.id }}?title={{ book.title }}&description={{ book.description }} {{ book.description }}">{{ book.title }}</a>
         </p>
     </h5>
 {% endfor %}
