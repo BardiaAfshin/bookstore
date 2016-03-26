@@ -46,7 +46,7 @@ $app->get('/', function() use ($app)
      * Todo: refactor into it's own model
      * performance note: triggering  index_title
      */
-    $books = $app['db']->fetchAll('SELECT id, substr(title,1,1) as alpha, title FROM books;');
+    $books = $app['db']->fetchAll('SELECT id, substr(title,1,1) as alpha, title, description FROM books;');
     foreach($books as $book)
     {
         {
@@ -65,12 +65,28 @@ $app->get('/', function() use ($app)
 
 $app->get('/book/{id}', function($id) use ($app)
 {
-    $books = $app['db']->fetchAll('SELECT id,isbn,title,description FROM books WHERE id = '.$id.' LIMIT 1');
+    if(isset($_REQUEST['title']) && isset($_REQUEST['description']))
+    {
+        $title = $_REQUEST['title'];
+        $description = $_REQUEST['description'];
+    }
+    else
+    {
+        /*
+         * introduce caching on doctrine2
+         */
+        $book = $app['db']->fetchAll('SELECT id,isbn,title,description FROM books WHERE id = '.$id.' LIMIT 1');
+        $title = $book[0]['title'];
+        $description = $book[0]['description'];
+    }
 
     return $app['twig']->render(
         'book.html.twig',
         array(
-            'books' => $books
+            'book' => [
+                'title' => $title,
+                'description' => $description
+            ]
         )
     );
 });
